@@ -1,0 +1,14 @@
+# Local environment and secrets
+.env
+
+# Virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+# Runtime data
+data/
+

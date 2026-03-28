@@ -1,0 +1,18 @@
+[project]
+name = "wow-tools"
+version = "0.1.0"
+description = "Scaffold for WoW automation research, addon signaling, and WCL data collection."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "requests>=2.32.0",
+    "mss>=10.0.0",
+    "numpy>=2.2.0",
+    "python-dotenv>=1.2.2",
+    "pandas>=3.0.1",
+    "pynput>=1.7.7",
+]
+
+[tool.uv]
+package = false
+
