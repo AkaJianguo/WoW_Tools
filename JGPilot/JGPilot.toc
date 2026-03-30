@@ -1,0 +1,4 @@
+## Interface: 120001
+## Title: JGPilot Dashboard (Pro)
+## SavedVariables: JGPilotDB
+JGPilot.lua
