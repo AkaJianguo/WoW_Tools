@@ -2,7 +2,7 @@ import time
 
 class RotationLogic:
     def __init__(self):
-        # 预设的基础技能按键 (如果这几个也写了宏，可以同样通过 scanner 自动识别)
+        # 预设的基础技能按键 (作为自动识别失败时的保底方案)
         self.static_keys = {
             "Judgment": "Q",
             "BladeOfJustice": "E",
@@ -28,16 +28,19 @@ class RotationLogic:
         if s['proc_ready'] and s['key_ham'] != "NONE":
             return {"skill": "Hammer of Light", "key": s['key_ham']}
 
-        # --- 优先级 2：处决宣判 (天锤) ---
+        # --- 优先级 2：处决宣判 (天锤爆发) ---
         # 逻辑：3圣能以上 + 爆发开关开 + 非熔断状态
-        # 为什么熔断：它需要8秒生效，残血砸下去等于浪费圣能。
         if s['holy_power'] >= 3 and s['burst_mode'] and not should_melt:
-            # 这里假设 ES 是固定按键，如果也绑了识别宏，可改为 s['key_es']
-            return {"skill": "Execution Sentence", "key": self.static_keys["ExecutionSentence"]}
+            # 这里的改进：优先使用 scanner 自动识别出的“天锤宏”按键
+            es_key = s.get('key_es', "NONE")
+            if es_key != "NONE":
+                return {"skill": "天锤爆发(宏)", "key": es_key}
+            else:
+                # 如果没扫到宏，则使用 init 里的保底按键
+                return {"skill": "Execution Sentence", "key": self.static_keys["ExecutionSentence"]}
 
         # --- 优先级 3：复仇之怒 (翅膀) ---
         # 逻辑：爆发开关开 + 非熔断状态
-        # 为什么熔断：20秒的长Buff，为了3秒残血开翅膀会导致下一波断档。
         if s['burst_mode'] and not should_melt:
             return {"skill": "Avenging Wrath", "key": self.static_keys["Wings"]}
 
@@ -52,7 +55,7 @@ class RotationLogic:
                 return {"skill": "Wake of Ashes", "key": s['key_wake']}
 
         # --- 优先级 5：资源消耗 (Spend) ---
-        # 逻辑：豆子 >= 3 时，即使熔断也要把豆子打光，不带入脱战。
+        # 逻辑：豆子 >= 3 时，即便触发熔断也要把豆子泄掉
         if s['holy_power'] >= 3:
             if s['aoe_mode'] and s['key_aoe'] != "NONE":
                 return {"skill": "Divine Storm", "key": s['key_aoe']}
@@ -62,7 +65,8 @@ class RotationLogic:
         # --- 优先级 6：常规获取 (Generate) ---
         # 逻辑：公正之剑 > 审判
         if s['holy_power'] < 5:
-            # 这里的优先级可以根据你的 12.0 英雄天赋偏好互换
-            return {"skill": "Generator (BoJ)", "key": self.static_keys["BladeOfJustice"]}
+            # 如果没豆了，优先打公正，其次打审判
+            # 这里可以增加 Judgment 的 CD 判定，目前默认优先 BoJ
+            return {"skill": "Generator", "key": self.static_keys["BladeOfJustice"]}
 
         return None
