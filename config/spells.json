@@ -1,0 +1,32 @@
+{
+    "HammerOfLight": {
+        "id": 431398,
+        "key": "1",
+        "priority": 1,
+        "comment": "英雄天赋核心消耗技，高亮即打"
+    },
+    "DivineToll": {
+        "id": 375576,
+        "key": "2",
+        "priority": 2,
+        "comment": "圣洁鸣钟，审计结论：0圣能收益最大"
+    },
+    "WakeOfAshes": {
+        "id": 255937,
+        "key": "3",
+        "priority": 3,
+        "comment": "灰烬觉醒，主要产生技"
+    },
+    "TemplarsVerdict": {
+        "id": 383328,
+        "key": "4",
+        "priority": 4,
+        "comment": "裁决，常规泄能技"
+    },
+    "BladeOfJustice": {
+        "id": 184575,
+        "key": "E",
+        "priority": 5,
+        "comment": "产生技，触发战争艺术优先"
+    }
+}
